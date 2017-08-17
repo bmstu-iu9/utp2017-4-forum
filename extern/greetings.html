@@ -1,0 +1,45 @@
+<!docktype html>
+<html>
+	<head>
+		<title>greetings</title>
+	</head>
+<body>
+	<p>
+		WELCOME!
+		
+		</br>
+		</br>
+		
+		try this:
+		
+		</br>
+		</br>
+			
+		1. 
+		<authorize>
+			<input type="button" id="authorization" value="authorize" onclick="authorization(event)">
+		</authorize>
+		
+		</br>
+		</br>
+		
+		2.  
+		<register>
+			<input type="button" id="registration" value="register" onclick="registration(event)">
+		</register>
+	</p>
+	
+	<script>
+	'use strict';
+	
+	function authorization(event) {
+		location = 'http://192.168.1.2:80/authorization';
+	}
+	
+	function registration(event) {
+		location = 'http://192.168.1.2:80/registration';
+	}
+	</script>
+	
+</body>
+</html>
