@@ -1,0 +1,134 @@
+<!docktype html>
+<html>
+	<head>
+		<title>authorization</title>
+	</head>
+<body>
+	<login>
+		<p class="center">enter login:</p>
+		<input class="center" type="text" id="login" onkeypress="if (event.keyCode == 13) { handler(event); return flase; }"></input>
+	</login>
+	
+	<password>
+		<p class="center">enter password:</p>
+		<input type="password" class="center" id="password" onkeypress="if (event.keyCode == 13) { handler(event); return flase; }"></input>
+	</password>
+
+	</br>
+	</br>
+	
+	<action>
+		<input type="button" class="center" onclick="handler(event)" value="authorize">
+	</action>
+	
+	</br>
+	</br>
+	-------------------------------
+	
+	<p>
+		if you don't have an account yet 
+		<register>
+			<input type="button" id="registration" value="register" onclick="registration(event)">
+		</register>
+	</p>
+	
+	</br>
+	
+	<script>
+	'use strict';
+	
+	function registration(event) {
+		location = 'http://192.168.1.2:80/registration';
+	}
+	
+	function handler(event) {
+		var login = document.getElementById('login').value;
+		var password = document.getElementById('password').value;
+		
+		if (verify(login, password)) {
+			act(login, password);
+		}
+		else {
+			alert('correct your data');
+			return;
+		}
+	}
+	
+	function verify(login, password) {
+		var str = '';
+		
+		if (login == "")
+			str += 'login is null\n';
+		
+		if (password == "")
+			str += 'password is null\n';
+		else if (password.length < 8)
+			str += 'password is too short\n';
+		else if (password.length >= 64)
+			str += 'password is too long\n';
+		
+		if (str != '')
+			alert(str);
+			
+		return str == '';
+	}
+	
+	function act(login, password) {
+		var xhr = new XMLHttpRequest();
+		
+		xhr.open('POST', '/auth', false);
+		
+		xhr.send(login + '$' + password);
+		
+		if (xhr.status == 200) {
+			set_cookie('login', login, null);
+			set_cookie('password', password, null);
+						
+			location = xhr.responseText + '?login=' + login + ';password=' + password;
+		}
+		else if (xhr.status == 401) {
+			alert('incorrect data');
+		
+			location = xhr.responseText;
+		}
+	}
+	
+	function get_cookie(name) {
+		var matches = document.cookie.match(new RegExp(
+			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		));
+		return matches ? decodeURIComponent(matches[1]) : undefined;
+	}
+	
+	function set_cookie(name, value, options) {
+		options = options || {};
+
+		var expires = options.expires;
+
+		if (typeof expires == "number" && expires) {
+		var d = new Date();
+			d.setTime(d.getTime() + expires * 1000);
+			expires = options.expires = d;
+		}
+		if (expires && expires.toUTCString) {
+			options.expires = expires.toUTCString();
+		}
+
+		value = encodeURIComponent(value);
+
+		var updatedCookie = name + "=" + value;
+
+		for (var propName in options) {
+			updatedCookie += "; " + propName;
+			var propValue = options[propName];
+			if (propValue !== true) {
+			updatedCookie += "=" + propValue;
+			}
+		}
+
+		document.cookie = updatedCookie;
+	}
+	</script>
+	
+</body>
+</html>
