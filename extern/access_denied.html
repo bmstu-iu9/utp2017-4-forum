@@ -1,0 +1,49 @@
+<!docktype html>
+<html>
+	<head>
+		<title>access denied!</title>
+	</head>
+<body>	
+	<p>
+		suggestions:
+		
+		</br>
+		</br>
+			
+		1. authorize/reauthorize 
+		<authorize>
+			<input type="button" id="authorization" value="authorize" onclick="authorization(event)">
+		</authorize>
+		
+		</br>
+		</br>
+		
+		2. register 
+		<register>
+			<input type="button" id="registration" value="register" onclick="registration(event)">
+		</register>
+	</p>
+	
+	
+	<action>
+		<input type="button" onclick="handler(event)" value="got it">
+	</action>
+	
+	<script>
+	'use strict';
+	
+	function authorization(event) {
+		location = 'http://192.168.1.2:80/authorization';
+	}
+	
+	function registration(event) {
+		location = 'http://192.168.1.2:80/registration';
+	}
+	
+	function handler(event) {
+		location = 'http://192.168.1.2:80/';
+	}
+	</script>
+	
+</body>
+</html>
