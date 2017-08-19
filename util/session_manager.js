@@ -16,7 +16,7 @@ const get_password = (login) => {
 
 const get_database = () => {
 	return fm.read_file('../auth/secret.txt').split('\n').map( (elem) => { 
-		return { login : elem.split('$')[0], password : elem.split('$')[1] };
+		return { login : elem.split('$')[0], password : elem.split('$')[1].replace('\r', '') };
 	});
 }
 
