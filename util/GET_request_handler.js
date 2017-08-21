@@ -40,24 +40,32 @@ const get_login_password = (data) => {
 }
 
 const handler = (request, response, session) => {
-	let data = url.parse(request.url);
-	let ad = get_login_password(data.query);
-	let location = get_location(data.path);
-	let access = check_access(check_access(ad.login, ad.password, location));
-	
-	response.writeHead(200, { "content-type" : "text/html" });
-	
-	if (location.split('/')[0] == 'extern') {
-		response.write(fm.read_file(data.path));
-	} else if (access == 'admin') {
-		response.write(fm.read_file(location + 'admin.html'));		
-	} else if (access == 'user') {
-		response.write(fm.read_file(location + 'user.html'));	
-	} else if (access == 'denied') {
-		response.write(fm.read_file('../extern/access_denied.html'));		
+	try {
+		let data = url.parse(request.url);
+		let location = get_location(data.pathname);	
+		
+		response.writeHead(200, { "content-type" : "text/html" });
+		
+		if (location.split('/')[1] == 'extern') {
+			response.write(fm.read_file('..' + data.pathname));
+		} else {
+			let ad = get_login_password(data.query);
+			let access = check_access(check_access(ad.login, ad.password, location));			
+			
+			if (access == 'admin') {
+				response.write(fm.read_file(location + 'admin.html'));		
+			} else if (access == 'user') {
+				response.write(fm.read_file(location + 'user.html'));	
+			} else if (access == 'denied') {
+				response.write(fm.read_file('../extern/access_denied.html'));		
+			}
+		}
+		
+		response.end();
+	} catch (err) {
+		console.log(err);
+		response.end();
 	}
-	
-	response.end();
 }
 
 module.exports.check_access = check_access;
