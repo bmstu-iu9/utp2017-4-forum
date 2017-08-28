@@ -14,7 +14,7 @@ const read_file = (path) => {
 	return fs.readFileSync(path, 'utf8');;
 }
 
-const delete_file = (path) => path {
+const delete_file = (path) => {
 	fs.unlinkSync(path);
 }
 
