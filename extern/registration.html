@@ -1,0 +1,163 @@
+<!docktype html>
+<html>
+	<head>
+		<title>registration</title>
+	</head>
+<body>
+	<div>
+	<login>
+		<p>enter login:</p>
+		<input type="text" id="login"></input>
+	</login>
+	
+	<password1>
+		<p>enter password:</p>
+		<input type="password" id="password1"></input>
+	</password1>
+	
+	<password2>
+		<p>enter password again:</p>
+		<input type="password" id="password2"></input>
+	</password2>
+
+	</br>
+	</br>
+	
+	<action>
+	<input type="button" onclick="handler(event)" value="register">
+	</action>
+	
+	</br>
+	</br>
+	-------------------------------
+	
+	<p class="center">
+		if you already have an account 
+		<register>
+			<input type="button" id="registration" value="authorize" onclick="authorization(event)">
+		</register>
+	</p>
+	
+	</br>
+	</div>
+	<script>
+	'use strict';
+	
+	function verify(login, password) {
+		var str = '';
+		
+		if (login == "")
+			str += 'login is null\n';
+		
+		if (password == "")
+			str += 'password is null\n';
+		else if (password.length < 8)
+			str += 'password is too short\n';
+		else if (password.length >= 64)
+			str += 'password is too long\n';
+		
+		if (str != '')
+			alert(str);
+			
+		return str == '';
+	}
+	
+	function act(login, password) {
+		var xhr = new XMLHttpRequest();
+		
+		xhr.open('POST', '/reg', false);
+		
+		xhr.send(login + '$' + password);
+		
+		if (xhr.status == 200) {
+			set_cookie('login', login, null);
+			set_cookie('password', password, null);
+						
+			location = xhr.responseText + '?login=' + login + ';password=' + password;
+		}
+		else if (xhr.status == 401) {
+			alert('regisration failed');
+		
+			location = xhr.responseText;
+		}
+	}
+		
+	function authorization(event) {
+		location = 'http://127.0.0.1:80/authorization';
+	}
+	
+	function handler(event) {
+		var login = document.getElementById('login').value;
+		var password1 = document.getElementById('password1').value;
+		var password2 = document.getElementById('password2').value;
+		
+		if (verify(login, password1, password2)) {
+			act(login, password1);
+		}
+		else {
+			alert('correct your data');
+			return;
+		}
+	}
+	
+	function verify(login, password1, password2) {
+		var str = '';
+		
+		if (login == "")
+			str += 'login is null\n';
+		
+		if (password1 == "")
+			str += 'password is null\n';
+		else if (password1.length < 8)
+			str += 'password is too short\n';
+		else if (password1.length >= 64)
+			str += 'password is too long\n';
+			
+		if (password1 != password2)
+			str += 'passwords aren\'t identical';
+		
+		if (str != '')
+			alert(str);
+			
+		return str == '';
+	}
+	
+	function get_cookie(name) {
+		var matches = document.cookie.match(new RegExp(
+			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		));
+		return matches ? decodeURIComponent(matches[1]) : undefined;
+	}
+	
+	function set_cookie(name, value, options) {
+		options = options || {};
+
+		var expires = options.expires;
+
+		if (typeof expires == "number" && expires) {
+		var d = new Date();
+			d.setTime(d.getTime() + expires * 1000);
+			expires = options.expires = d;
+		}
+		if (expires && expires.toUTCString) {
+			options.expires = expires.toUTCString();
+		}
+
+		value = encodeURIComponent(value);
+
+		var updatedCookie = name + "=" + value;
+
+		for (var propName in options) {
+			updatedCookie += "; " + propName;
+			var propValue = options[propName];
+			if (propValue !== true) {
+			updatedCookie += "=" + propValue;
+			}
+		}
+
+		document.cookie = updatedCookie;
+	}
+	</script>
+	
+</body>
+</html>
