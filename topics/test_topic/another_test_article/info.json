@@ -1,0 +1,7 @@
+{
+	"type":"article",
+	"count":3,
+	"owner":"user",
+	"access":"authorized",
+	"text":"'This article is created for testing purposes. Yet again.'"
+}
