@@ -3,6 +3,7 @@
 const http = require('http');
 const fm = require('../file_system/file_manager');
 const auth = require('../auth/authorization_handler');
+const reg = require('../auth/registration_handler');
 const GET = require('../util/GET_request_handler');
 
 let session = [];
@@ -47,10 +48,14 @@ const handler = (request, response) => {
 		response.writeHead(200, { "content-type" : "text/html" });
 		response.write(fm.read_file('../extern/authorization.html'));
 		response.end();
-	} else if (request.method == 'POST' && request.url == '/auth') {
-		process_post(request, response, auth.handler, session);
-	} else if (request.method == 'POST' && request.url == '/sert') {
-		process_post(request, response, auth.session_check, session);
+	} else if (request.method == 'POST') {
+		if (request.url == '/auth') {
+			process_post(request, response, auth.handler, session);
+		} else if (request.url == '/reg') {
+			process_post(request, response, reg.handler, session);
+		} else if (request.url == '/sert') {
+			process_post(request, response, auth.session_check, session);
+		}
 	} else if (request.method == 'GET') {
 		GET.handler(request, response, session);
 	} else {
