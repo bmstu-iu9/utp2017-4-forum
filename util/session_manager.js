@@ -15,7 +15,9 @@ const get_password = (login) => {
 }
 
 const get_database = () => {
-	return fm.read_file('../auth/secret.txt').split('\n').map( (elem) => { 
+	return fm.read_file('../auth/secret.txt').split('\n').filter( (elem) => {
+		return elem != undefined && elem != '' && elem != '\r'; 
+		}).map( (elem) => { 
 		return { login : elem.split('$')[0], password : elem.split('$')[1].replace('\r', '') };
 	});
 }
@@ -45,8 +47,24 @@ const add_user = (user, session) => {
 	}
 }
 
+const is_unregistered = (login, password, database) => {
+	let f = false;
+	
+	f |= database.some( (elem) => { 
+		return elem.login == login;
+	});
+	
+	return !f;
+}
+
+const register = (login, password) => {
+	fm.append_file('../auth/secret.txt', login + '$' + password + '\n');
+}
+
 let database = get_database();
 
+module.exports.register = register;
+module.exports.is_unregistered = is_unregistered;
 module.exports.get_password = get_password;
 module.exports.pair_lookup = pair_lookup;
 module.exports.new_user = new_user;
