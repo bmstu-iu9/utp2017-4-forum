@@ -5,6 +5,7 @@ const fm = require('../file_system/file_manager');
 const auth = require('../auth/authorization_handler');
 const reg = require('../auth/registration_handler');
 const GET = require('../util/GET_request_handler');
+const url = require('url');
 
 let session = [];
 
@@ -33,27 +34,29 @@ const process_post = (request, response, handler, session) => {
 }
 
 const handler = (request, response) => {
-	console.log(request.url);
-	if (request.url == '/' || request.url == '') {
+	//console.log(request.url);
+	let data = url.parse(request.url);
+	
+	if (data.pathname == '/' || data.pathname == '') {
 		response.writeHead(200, { "content-type" : "text/html" });
 		response.write(fm.read_file('../extern/greetings.html'));
 		response.end();
-	} else if (request.url == '/registration') {
+	} else if (data.pathname == '/registration') {
 		console.log('registration request');
 		response.writeHead(200, { "content-type" : "text/html" });
 		response.write(fm.read_file('../extern/registration.html'));
 		response.end();
-	} else if (request.url == '/authorization') {
+	} else if (data.pathname == '/authorization') {
 		console.log('authorization request');
 		response.writeHead(200, { "content-type" : "text/html" });
 		response.write(fm.read_file('../extern/authorization.html'));
 		response.end();
 	} else if (request.method == 'POST') {
-		if (request.url == '/auth') {
+		if (data.pathname == '/auth') {
 			process_post(request, response, auth.handler, session);
-		} else if (request.url == '/reg') {
+		} else if (data.pathname == '/reg') {
 			process_post(request, response, reg.handler, session);
-		} else if (request.url == '/sert') {
+		} else if (data.pathname == '/sert') {
 			process_post(request, response, auth.session_check, session);
 		}
 	} else if (request.method == 'GET') {
