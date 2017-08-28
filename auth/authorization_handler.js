@@ -4,9 +4,7 @@ const verify_login = require('../util/verifier').verify_login;
 const verify_password = require('../util/verifier').verify_password;
 const sm = require('../util/session_manager');
 
-const handler = (request, response, data, session) => {
-	console.log(sm.get_database());
-	
+const handler = (request, response, data, session) => {	
 	let login = '', password = '';
 	
 	try {
@@ -21,7 +19,7 @@ const handler = (request, response, data, session) => {
 		sm.add_user(sm.new_user(data.split('$')[0], data.split('$')[1], request.connection.remoteAddress), session);
 		
 		response.writeHead(200, { "content-type" : "text/plain" });
-		response.write('../extern/test.html');
+		response.write('../topics');
 		response.end();
 	}
 	else {
@@ -32,7 +30,7 @@ const handler = (request, response, data, session) => {
 const session_check = (login, password) => {	
 	if (verify_login(login) && verify_password(password) && sm.pair_lookup(login, password, sm.get_database())) {		
 		response.writeHead(200, { "content-type" : "text/plain" });
-		response.write('../extern/test.html');
+		response.write('../topics');
 		response.end();
 	}
 	else {
@@ -43,7 +41,6 @@ const session_check = (login, password) => {
 const authorization_error = (response) => {
 	console.log('authorization error');
 	response.writeHead(401, { "content-type" : "text/plain" });
-	//response.write('http://127.0.0.1:80/authorization');
 	response.write('authorization');
 	response.end();
 }

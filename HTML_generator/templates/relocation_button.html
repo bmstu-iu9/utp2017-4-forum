@@ -1,0 +1,26 @@
+<bracket_blank>
+			<input type="button" id="bracket_blank" value="name_blank" onclick="bracket_blank_relocation(event)">
+</bracket_blank>
+<script>
+	'use strict';
+	
+	function get_cookie(name) {
+		var matches = document.cookie.match(new RegExp(
+			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		));
+		return matches ? decodeURIComponent(matches[1]) : undefined;
+	}
+	
+	function bracket_blank_relocation(event) {
+		let login = get_cookie('login');
+		let password = get_cookie('password');
+		let go = 'location_blank';
+		
+		if (go.lastIndexOf('?') != -1) {
+			location = go + ';login=' + login + ';password=' + password;
+		} else {
+			location = go + '?login=' + login + ';password=' + password;
+		}
+	}
+	</script>
+</script>
