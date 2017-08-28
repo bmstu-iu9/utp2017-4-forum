@@ -13,11 +13,11 @@ const get_location = (location) => {
 }
 
 const get_access = (location) => {
-	return JSON.parse(fm.read_file(location + 'info.json')).access;
+	return JSON.parse(fm.read_file(location + '/info.json')).access;
 }
 
 const get_owner = (location) => {
-	return JSON.parse(fm.read_file(location + 'info.json')).owner;
+	return JSON.parse(fm.read_file(location + '/info.json')).owner;
 }
 
 const check_access = (login, password, location) => {
@@ -43,19 +43,19 @@ const handler = (request, response, session) => {
 	try {
 		let data = url.parse(request.url);
 		let location = get_location(data.pathname);	
-		
+				
 		response.writeHead(200, { "content-type" : "text/html" });
 		
 		if (location.split('/')[1] == 'extern') {
 			response.write(fm.read_file('..' + data.pathname));
 		} else {
 			let ad = get_login_password(data.query);
-			let access = check_access(check_access(ad.login, ad.password, location));			
+			let access = check_access(ad.login, ad.password, location);			
 			
 			if (access == 'admin') {
-				response.write(fm.read_file(location + 'admin.html'));		
+				response.write(fm.read_file(location + '/admin.html'));		
 			} else if (access == 'user') {
-				response.write(fm.read_file(location + 'user.html'));	
+				response.write(fm.read_file(location + '/user.html'));	
 			} else if (access == 'denied') {
 				response.write(fm.read_file('../extern/access_denied.html'));		
 			}
