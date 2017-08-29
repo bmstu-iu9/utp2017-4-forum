@@ -1,0 +1,34 @@
+<script>
+	'use strict';
+	
+	function bracket_blank_action(event) {
+		let data = {
+			type : "remove_comment",
+			location : "location_blank",
+			comment : "comment_blank",
+			login : get_cookie('login'),
+			password : get_cookie('password')
+		};
+		
+		let xhr = new XMLHttpRequest();
+		
+		xhr.open('POST', '/', false);
+		
+		xhr.send(JSON.stringify(data));
+		
+		if (xhr.status == 200) {
+			location = xhr.responseText + '?login=' + data.login + ';password=' + data.password;
+		}
+		else if (xhr.status == 401) {
+			location = xhr.responseText;
+		}
+		
+	}
+	
+	function get_cookie(name) {
+		let matches = document.cookie.match(new RegExp(
+			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		));
+		return matches ? decodeURIComponent(matches[1]) : undefined;
+	}
+</script>
