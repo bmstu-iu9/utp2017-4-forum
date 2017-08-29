@@ -6,6 +6,14 @@ const mkdir = (path) => {
 	fs.mkdirSync(path);
 }
 
+const rmdir = (path) => {
+	try {
+		fs.rmdirSync(path);
+	} catch (err) {
+		return;
+	}
+}
+
 const append_file = (path, data) => {
 	fs.appendFileSync(path, data);
 }
@@ -26,6 +34,7 @@ const modify_file = (path, template, str) => {
 	write_file(path, read_file(path).replace(template, str));
 }
 
+module.exports.rmdir = rmdir;
 module.exports.mkdir = mkdir;
 module.exports.modify_file = modify_file;
 module.exports.delete_file = delete_file;

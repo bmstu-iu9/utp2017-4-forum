@@ -36,7 +36,7 @@ const replace = (str, template, newstr) => {
 }
 
 const get_back = (location) => {
-	return location.substring(0, location.lastIndexOf('/') + 1);
+	return location.substring(0, location.lastIndexOf('/'));
 }	
 
 const get_front = (location) => {
@@ -237,5 +237,6 @@ const generate_article = (location, info) => {
 generate('../topics');
 generate('../topics/test_topic');
 generate('../topics/test_topic/test_article');
+generate('../topics/test_topic/third_test_article');
 
 module.exports.generate = generate;
