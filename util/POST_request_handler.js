@@ -38,7 +38,7 @@ const handler = (request, response, data, session) => {
 		if (data.type.localeCompare('add_article') == 0) {
 			response.write(strip_location(add_article(data)));
 		} else if (data.type.localeCompare('add_comment') == 0) {
-			
+			response.write(strip_location(add_comment(data)));
 		} else if (data.type.localeCompare('remove_article') == 0) {
 			
 		} else if (data.type.localeCompare('remove_comment') == 0) {
@@ -74,6 +74,24 @@ const add_article = (data) => {
 		text : data.text
 	};
 	fm.write_file(location + '/info.json', JSON.stringify(info));
+	html_gen.generate(location);
+	
+	return location;
+}
+
+const add_comment = (data) => {
+	let location = get_location(data.location);
+	let info = JSON.parse(fm.read_file(location + '/info.json'));
+	
+	info.count++;
+	fm.write_file(location + '/info.json', JSON.stringify(info));
+	
+	fm.write_file(location + '/' + info.count + '.json', JSON.stringify({
+		type : "comment",
+		owner : data.login,
+		access : "authorized",
+		text : data.text
+	}));
 	html_gen.generate(location);
 	
 	return location;
