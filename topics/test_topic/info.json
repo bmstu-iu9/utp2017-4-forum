@@ -1,6 +1,6 @@
 {
 	"type":"article_list",
-	"count":2,
+	"count":3,
 	"access":"authorized",
-	"list":["test_article", "another_test_article"]	
+	"list":["test_article", "another_test_article", "third_test_topic"]	
 }
