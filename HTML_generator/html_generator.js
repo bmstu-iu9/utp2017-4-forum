@@ -36,7 +36,7 @@ const replace = (str, template, newstr) => {
 }
 
 const get_back = (location) => {
-	return location.substring(0, location.lastIndexOf('/') + 1);
+	return location.substring(0, location.lastIndexOf('/'));
 }	
 
 const get_front = (location) => {
@@ -212,7 +212,7 @@ const generate_article = (location, info) => {
 	
 	user_body += ln + info.text + ln + divider;
 										
-	for (let i = 1; i <= info.count; i++) {
+	info.list.forEach( (i) => {
 		let comment = JSON.parse(fm.read_file(location + '/' + i + '.json'));
 		
 		admin_body += divider + ln + 'owner : ' + comment.owner; 
@@ -220,12 +220,12 @@ const generate_article = (location, info) => {
 		admin_body = replace(admin_body, 'bracket_blank', 'remove_' + i);
 		admin_body = replace(admin_body, 'name_blank', 'remove');
 		admin_body = replace(admin_body, 'location_blank', url_path);
-		admin_body = replace(admin_body, 'comment_blank', i + '');
+		admin_body = replace(admin_body, 'comment_blank', i);
 		admin_body += ln + comment.text + ln;
 		
 		user_body += divider + ln + 'owner : ' + comment.owner; 
 		user_body += ln + comment.text + ln;
-	};
+	});
 	
 	admin = admin.replace('body_blank', admin_body);
 	user = user.replace('body_blank', user_body);
@@ -237,5 +237,6 @@ const generate_article = (location, info) => {
 generate('../topics');
 generate('../topics/test_topic');
 generate('../topics/test_topic/test_article');
+generate('../topics/test_topic/third_test_article');
 
 module.exports.generate = generate;
