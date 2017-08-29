@@ -2,6 +2,10 @@
 
 const fs = require('fs');
 
+const mkdir = (path) => {
+	fs.mkdirSync(path);
+}
+
 const append_file = (path, data) => {
 	fs.appendFileSync(path, data);
 }
@@ -22,7 +26,8 @@ const modify_file = (path, template, str) => {
 	write_file(path, read_file(path).replace(template, str));
 }
 
-module.exports.modify_file = modify_file
+module.exports.mkdir = mkdir;
+module.exports.modify_file = modify_file;
 module.exports.delete_file = delete_file;
 module.exports.append_file = append_file;
 module.exports.write_file = write_file;
