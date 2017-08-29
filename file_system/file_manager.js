@@ -2,16 +2,24 @@
 
 const fs = require('fs');
 
+const rmdir = (path) => {
+	fs.readdirSync(path).forEach( (i) => {
+        let filename = path + '/' + list[i];
+
+        if(filename != "." && filename != "..") {
+			if(fs.statSync(filename).isDirectory()) {
+				rmdir(filename);
+			} else {
+				delete_file(filename);
+			}
+		}
+    });
+	
+    fs.rmdirSync(path);
+};
+
 const mkdir = (path) => {
 	fs.mkdirSync(path);
-}
-
-const rmdir = (path) => {
-	try {
-		fs.rmdirSync(path);
-	} catch (err) {
-		return;
-	}
 }
 
 const append_file = (path, data) => {
