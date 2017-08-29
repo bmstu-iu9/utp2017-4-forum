@@ -6,7 +6,6 @@ const get_password = (login) => {
 	let password = '';
 	
 	get_database().some( (elem) => {
-		console.log(elem);
 		if (elem.login.localeCompare(login) == 0)
 			password = elem.password;
 		return elem.login.localeCompare(login) == 0;
