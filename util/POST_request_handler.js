@@ -17,14 +17,6 @@ const strip_location = (location) => {
 	return location.replace('..', '');
 }
 
-const get_back = (location) => {
-	return location.substring(0, location.lastIndexOf('/'));
-}	
-
-const get_front = (location) => {
-	return location.substring(location.lastIndexOf('/') + 1);
-}
-
 const handler = (request, response, data, session) => {
 	try {
 		data = JSON.parse(data);
@@ -41,7 +33,7 @@ const handler = (request, response, data, session) => {
 			response.write(strip_location(remove_comment(data)));
 		} else {
 			console.log('goddamn');
-			response.write('/extern/access_denied.html');
+			response.write('../extern/access_denied.html');
 		}
 		
 		response.end();
