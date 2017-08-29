@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const rmdir = (path) => {
 	fs.readdirSync(path).forEach( (i) => {
-        let filename = path + '/' + list[i];
+        let filename = path + '/' + i;
 
         if(filename != "." && filename != "..") {
 			if(fs.statSync(filename).isDirectory()) {
@@ -42,6 +42,19 @@ const modify_file = (path, template, str) => {
 	write_file(path, read_file(path).replace(template, str));
 }
 
+const cascade = (path, func) => {
+	func(path);
+	
+	fs.readdirSync(path).forEach( (i) => {
+        let filename = path + '/' + i;
+
+        if(filename != "." && filename != "..") {
+			cascade(filename, func);
+		}
+    });
+}
+
+module.exports.cascade = cascade;
 module.exports.rmdir = rmdir;
 module.exports.mkdir = mkdir;
 module.exports.modify_file = modify_file;
