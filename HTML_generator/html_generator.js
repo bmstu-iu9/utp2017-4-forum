@@ -139,6 +139,8 @@ const generate_articles = (location, info) => {
 		admin_body += divider + ln + article + ' : ' + ln + action + remove;
 		admin_body = replace(admin_body, 'bracket_blank', 'remove_' + article);
 		admin_body = replace(admin_body, 'name_blank', 'remove');
+		admin_body = replace(admin_body, 'location_blank', url_path);
+		admin_body = replace(admin_body, 'article_blank', article);
 		
 		admin_body += reloc + ln;
 		admin_body = replace(admin_body, 'bracket_blank', article);
@@ -203,6 +205,8 @@ const generate_article = (location, info) => {
 	admin_body += action + remove_article;
 	admin_body = replace(admin_body, 'bracket_blank', 'remove_' + get_front(url_path));
 	admin_body = replace(admin_body, 'name_blank', 'remove');
+	admin_body = replace(admin_body, 'location_blank', get_back(url_path));
+	admin_body = replace(admin_body, 'article_blank', get_front(url_path));
 	
 	admin_body += ln + info.text + ln + divider;
 	
@@ -213,8 +217,10 @@ const generate_article = (location, info) => {
 		
 		admin_body += divider + ln + 'owner : ' + comment.owner; 
 		admin_body += ln + action + remove_comment;
-		admin_body = replace(admin_body, 'bracket_blank', 'remove_' + comment);
+		admin_body = replace(admin_body, 'bracket_blank', 'remove_' + i);
 		admin_body = replace(admin_body, 'name_blank', 'remove');
+		admin_body = replace(admin_body, 'location_blank', url_path);
+		admin_body = replace(admin_body, 'comment_blank', i + '');
 		admin_body += ln + comment.text + ln;
 		
 		user_body += divider + ln + 'owner : ' + comment.owner; 
