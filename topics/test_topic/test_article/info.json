@@ -3,5 +3,6 @@
 	"count":2,
 	"owner":"admin",
 	"access":"authorized",
+	"list":["1", "2"],
 	"text":"'This article is created for testing purposes.'"
 }
