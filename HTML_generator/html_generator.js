@@ -234,9 +234,9 @@ const generate_article = (location, info) => {
 	fm.write_file(location + '/user.html', user);
 }
 
-generate('../topics');
-generate('../topics/test_topic');
-generate('../topics/test_topic/test_article');
-generate('../topics/test_topic/third_test_article');
+fm.cascade('../topics', (path) => {
+	if (path.lastIndexOf('.') < path.lastIndexOf('/'))
+		generate(path);
+});
 
 module.exports.generate = generate;
