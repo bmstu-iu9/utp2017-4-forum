@@ -1,0 +1,6 @@
+{
+	"type":"topic_list",
+	"count":1,
+	"access":"authorized",
+	"list":["test_topic"]
+}

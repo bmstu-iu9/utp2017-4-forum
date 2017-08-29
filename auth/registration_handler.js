@@ -20,7 +20,7 @@ const handler = (request, response, data, session) => {
 		sm.add_user(sm.new_user(data.split('$')[0], data.split('$')[1], request.connection.remoteAddress), session);
 		
 		response.writeHead(200, { "content-type" : "text/plain" });
-		response.write('../extern/test.html');
+		response.write('../topics');
 		response.end();
 	}
 	else {
