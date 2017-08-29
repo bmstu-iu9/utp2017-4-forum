@@ -7,7 +7,11 @@ const mkdir = (path) => {
 }
 
 const rmdir = (path) => {
-	fs.rmdirSync(path);
+	try {
+		fs.rmdirSync(path);
+	} catch (err) {
+		return;
+	}
 }
 
 const append_file = (path, data) => {
