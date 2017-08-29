@@ -1,0 +1,78 @@
+<!docktype html>
+<html>
+	<head>
+		<title>
+			add article
+		</title>
+	</head>
+	<body>
+		<article_title>
+			<p>
+				title : 
+			</p>
+			<input type="text" id="article_title" onkeypress="if (event.keyCode == 13) { handler(event); return flase; }"></input>
+		</article_title>
+		
+		<text>
+			<p>
+				article : 
+			</p>
+			<input type="text" id="text" onkeypress="if (event.keyCode == 13) { handler(event); return flase; }"></input>
+		</text>
+
+		</br>
+		</br>
+		
+		<action>
+			<input type="button" onclick="handler(event)" value="commit">
+		</action>
+		
+		<script>
+		'use strict';
+				
+		function handler(event) {
+			let data = {
+				type : "add_article",
+				article : document.getElementById('article_title').value,
+				text : document.getElementById('text').value,
+				login : get_cookie('login'),
+				password : get_cookie('password'),
+				location : get_location(window.location.href)
+			} 
+			
+			let xhr = new XMLHttpRequest();
+			
+			xhr.open('POST', '/', false);
+			
+			xhr.send(JSON.stringify(data));
+			
+			if (xhr.status == 200) {
+				location = xhr.responseText + '?login=' + data.login + ';password=' + data.password;
+			}
+			else if (xhr.status == 401) {
+				location = xhr.responseText;
+			}
+		}
+		
+		function get_location(url) {
+			let res = '';
+			
+			url.split('?')[1].split(';').some( (elem) => {
+				if (elem.split('=')[0].localeCompare('location') == 0)
+					res = elem.split('=')[1];
+				return elem.split('=')[0].localeCompare('location') == 0;
+			});
+			
+			return res;
+		}
+		
+		function get_cookie(name) {
+			let matches = document.cookie.match(new RegExp(
+				"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+			));
+			return matches ? decodeURIComponent(matches[1]) : undefined;
+		}
+		</script>
+		
+	</body>
+</html>
