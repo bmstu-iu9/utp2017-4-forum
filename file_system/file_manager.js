@@ -6,8 +6,8 @@ const rmdir = (path) => {
 	fs.readdirSync(path).forEach( (i) => {
         let filename = path + '/' + i;
 
-        if(filename != "." && filename != "..") {
-			if(fs.statSync(filename).isDirectory()) {
+        if (filename != "." && filename != "..") {
+			if (fs.statSync(filename).isDirectory()) {
 				rmdir(filename);
 			} else {
 				delete_file(filename);
@@ -45,13 +45,15 @@ const modify_file = (path, template, str) => {
 const cascade = (path, func) => {
 	func(path);
 	
-	fs.readdirSync(path).forEach( (i) => {
-        let filename = path + '/' + i;
+	if (fs.statSync(path).isDirectory()) {
+		fs.readdirSync(path).forEach( (i) => {
+			let filename = path + '/' + i;
 
-        if(filename != "." && filename != "..") {
-			cascade(filename, func);
-		}
-    });
+			if (filename != "." && filename != "..") {
+				cascade(filename, func);
+			}
+		});
+	}
 }
 
 module.exports.cascade = cascade;
