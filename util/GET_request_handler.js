@@ -63,7 +63,7 @@ const handler = (request, response, session) => {
 		
 		response.end();
 	} catch (err) {
-		console.log(err);
+		//console.log(err);
 		response.end();
 	}
 }
